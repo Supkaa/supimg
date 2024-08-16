@@ -2,8 +2,8 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/go
 {
 	"name": "Go",
-	build: {
-		dockerfile: "Dockerfile"
+	"build": {
+		"dockerfile": "Dockerfile"
 	},
 	"features": {
 		"ghcr.io/brokeyourbike/devcontainer-features/mockery-go:0": {},
