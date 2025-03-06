@@ -12,6 +12,7 @@ import (
 // w - image output width
 // h - image output height
 // q - image output quality
+// d - image rotation degrees
 // ext - image output extension
 // wmt - watermark text
 // wmpos - watermark position
@@ -24,6 +25,7 @@ func main() {
 		widthQuery := query.Get("w")
 		heightQuery := query.Get("h")
 		qualityQuery := query.Get("q")
+		degreesQuery := query.Get("d")
 		// extension := query.Get("ext")
 		quality := 100
 		if qualityQuery != "" {
@@ -40,6 +42,8 @@ func main() {
 			w.Write([]byte(err.Error()))
 			return
 		}
+
+		img.Rotate(getImgRotateAngleFromQuery(degreesQuery))
 
 		width, height := getImgWidthAndHeightFromQuery(img.Width(), img.Height(), widthQuery, heightQuery)
 		// scaleFactor := math.Min(float64(width)/float64(img.Width()), float64(height)/float64(img.Height()))
@@ -111,6 +115,20 @@ func main() {
 	// 	Color:     vips.Color{},
 	// 	Alignment: 0,
 	// })
+}
+
+func getImgRotateAngleFromQuery(degreesQuery string) vips.Angle {
+	d := strings.TrimSpace(degreesQuery)
+	switch d {
+	case "90":
+		return vips.Angle90
+	case "180":
+		return vips.Angle180
+	case "270":
+		return vips.Angle270
+	default:
+		return vips.Angle0
+	}
 }
 
 func getImgWidthAndHeightFromQuery(width, height int, widthQuery, heightQuery string) (int, int) {
